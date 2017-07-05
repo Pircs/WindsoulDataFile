@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindsoulDataFile.Test", "te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindsoulDataFile.App", "src\WindsoulDataFile.App\WindsoulDataFile.App.csproj", "{68FAFA25-1665-4D8B-922C-FAA90B5488EA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{4DA0E133-D42F-459C-A093-624EA28BF1C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

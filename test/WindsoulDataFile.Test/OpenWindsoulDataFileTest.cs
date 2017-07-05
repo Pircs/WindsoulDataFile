@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Xunit;
 
@@ -7,37 +8,68 @@ namespace WindsoulDataFile.Test
 {
     public class OpenWindsoulDataFileTest
     {
-        [Fact(DisplayName = "Open by file path (with using)")]
-        public void OpenByFilePathWithUsing()
+        private const string ValidTestFile = "valid-file.wdf";
+
+        [Fact(DisplayName = "Open by file path")]
+        public void OpenByFilePath()
         {
-            using (var windsoul = new WindsoulFile("test.wdf"))
+            WindsoulFile windsould = null;
+
+            try
             {
+                windsould = new WindsoulFile(ValidTestFile);
+            }
+            catch
+            {
+                windsould = null;
+            }
+            finally
+            {
+                windsould?.Dispose();
+                Assert.NotNull(windsould);
             }
         }
 
-        [Fact(DisplayName = "Open by file buffer (with using)")]
-        public void OpenByFileBufferWithUsing()
+        [Fact(DisplayName = "Open by file buffer")]
+        public void OpenByFileBuffer()
         {
+            WindsoulFile windsould = null;
+            byte[] fileBuffer = File.ReadAllBytes(ValidTestFile);
+
+            try
+            {
+                windsould = new WindsoulFile(fileBuffer);
+            }
+            catch
+            {
+                windsould = null;
+            }
+            finally
+            {
+                windsould?.Dispose();
+                Assert.NotNull(windsould);
+            }
         }
 
-        [Fact(DisplayName = "Open by file stream (with using)")]
-        public void OpenByFileStreamWithUsing()
+        [Fact(DisplayName = "Open by file stream")]
+        public void OpenByFileStream()
         {
-        }
+            WindsoulFile windsould = null;
+            FileStream fileStream = File.OpenRead(ValidTestFile);
 
-        [Fact(DisplayName = "Open by file path (without using)")]
-        public void OpenByFilePathWithoutUsing()
-        {
-        }
-
-        [Fact(DisplayName = "Open by file buffer (without using)")]
-        public void OpenByFileBufferWithoutUsing()
-        {
-        }
-
-        [Fact (DisplayName = "Open by file stream (without using)")]
-        public void OpenByFileStreamWithoutUsing()
-        {
+            try
+            {
+                windsould = new WindsoulFile(fileStream);
+            }
+            catch
+            {
+                windsould = null;
+            }
+            finally
+            {
+                windsould?.Dispose();
+                Assert.NotNull(windsould);
+            }
         }
     }
 }
