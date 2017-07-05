@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <Authors>Filipe GOMES PEIXOTO</Authors>
+    <Description />
+    <Company />
+  </PropertyGroup>
+
+</Project>

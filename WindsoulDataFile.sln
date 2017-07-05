@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{806FFB50-A09A-4459-92AA-BC600417A6ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindsoulDataFile", "src\WindsoulDataFile\WindsoulDataFile.csproj", "{F27C0763-3294-4507-AD46-58B0FC5CC9B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B9E58B62-E533-4224-AF1B-73D1AFB78849}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindsoulDataFile.App", "src\WindsoulDataFile.App\WindsoulDataFile.App.csproj", "{46C4C457-A1D4-4F53-B4F4-73398DCE1D60}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F27C0763-3294-4507-AD46-58B0FC5CC9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F27C0763-3294-4507-AD46-58B0FC5CC9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F27C0763-3294-4507-AD46-58B0FC5CC9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F27C0763-3294-4507-AD46-58B0FC5CC9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46C4C457-A1D4-4F53-B4F4-73398DCE1D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C4C457-A1D4-4F53-B4F4-73398DCE1D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C4C457-A1D4-4F53-B4F4-73398DCE1D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46C4C457-A1D4-4F53-B4F4-73398DCE1D60}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F27C0763-3294-4507-AD46-58B0FC5CC9B0} = {806FFB50-A09A-4459-92AA-BC600417A6ED}
+		{46C4C457-A1D4-4F53-B4F4-73398DCE1D60} = {806FFB50-A09A-4459-92AA-BC600417A6ED}
+	EndGlobalSection
+EndGlobal
