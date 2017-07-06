@@ -6,6 +6,13 @@
 
 WindsoulDataFile is a C# library for managing WDF files easily.
 
+## Details 
+
+- Language : `C#`
+- Framework : `.NET Standard 1.3`
+- Type : `Library`
+- Environment : Visual Studio 2017
+
 ## What is Windsoul Data File ?
 
 The Windsoul Data File (WDF) was originaly created by Cloud Wu within the Windsoul++ game programming library in 1999-2001. This file structure is mainly used in the `Conquer Online` game for storing resources (Maps, textures, etc...)
