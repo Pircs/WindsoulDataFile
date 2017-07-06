@@ -14,16 +14,26 @@ You can find the original `C++` source code [here](http://read.pudn.com/download
 
 The WDF file is structured has followed :
 
-- **Header**
-	- WDF Header (0x57444650)
-	- File count
-	- First file offset
-- **Entries**
-	- Id (Entry name hashed)
-	- Start Address
-	- Size
-	- Reserved Space
-- **Data**
+### Header
+```c#
+[uint] WDF Header (0x57444650)
+[int] fileCount
+[uint] fileListOffset
+```
+	
+### Entries
+```c#
+[uint] fileHashId
+[uint] offset
+[int] size
+[uint] reserved
+```
+### Data
+
+All data
+
+----
+
 
 The WDF files can be considered as "packages" containing one or several files. Just like a standard `zip` archive. The difference is that the name of all entries are hashed using a Hash algorithm (string_to_id). 
 
