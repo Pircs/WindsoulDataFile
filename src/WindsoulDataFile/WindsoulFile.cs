@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using WindsoulDataFile.Exceptions;
 
@@ -12,11 +13,15 @@ namespace WindsoulDataFile
 
         private bool _disposed;
         private string _filePath;
-        private uint _fileCount;
+        private int _fileCount;
         private Stream _stream;
         private BinaryReader _reader;
+        private List<WindsoulFileEntry> _files;
 
-        public uint Count => this._fileCount;
+
+        public int Count => this._fileCount;
+
+        public IReadOnlyCollection<WindsoulFileEntry> Files => this._files;
 
         public WindsoulFile(string filePath)
         {
@@ -41,10 +46,39 @@ namespace WindsoulDataFile
         {
             this._stream = input;
             this._reader = new BinaryReader(this._stream);
+            this._files = new List<WindsoulFileEntry>();
             uint fileHeader = this._reader.ReadUInt32();
 
             if (fileHeader != Header)
                 throw new WindsoulFileBadHeaderException();
+
+            this._fileCount = this._reader.ReadInt32();
+            uint fileListOffset = this._reader.ReadUInt32();
+
+            this._reader.BaseStream.Seek(fileListOffset, SeekOrigin.Begin);
+
+            for (int i = 0; i < this._fileCount; i++)
+            {
+                var fileEntry = new WindsoulFileEntry()
+                {
+                    Id = this._reader.ReadUInt32(),
+                    Offset = this._reader.ReadUInt32(),
+                    Size = this._reader.ReadInt32(),
+                    Reserved = this._reader.ReadUInt32()
+                };
+
+                this._files.Add(fileEntry);
+            }
+        }
+
+        public byte[] GetFileContent(uint id)
+        {
+            WindsoulFileEntry file = this._files.FirstOrDefault(x => x.Id == id);
+
+            this._reader.BaseStream.Seek(file.Offset, SeekOrigin.Begin);
+            byte[] content = this._reader.ReadBytes(file.Size);
+
+            return content;
         }
 
         public void Dispose()
@@ -59,6 +93,85 @@ namespace WindsoulDataFile
 
                 this._disposed = true;
             }
+        }
+
+        private uint Hash(string input)
+        {
+            //x86 - 32 bits - Registers
+            uint eax, ebx, ecx, edx, edi, esi;
+            ulong num = 0;
+
+            uint v;
+            int i;
+            uint[] m = new uint[0x46];
+            byte[] buffer = new byte[0x100];
+
+            input = input.ToLowerInvariant();
+            //input = input.Replace('\\', '/');
+
+            for (i = 0; i < input.Length; i++)
+                buffer[i] = (byte)input[i];
+
+            int Length = (input.Length % 4 == 0 ? input.Length / 4 : input.Length / 4 + 1);
+            for (i = 0; i < Length; i++)
+                m[i] = BitConverter.ToUInt32(buffer, i * 4);
+
+            m[i++] = 0x9BE74448; //
+            m[i++] = 0x66F42C48; //
+
+            v = 0xF4FA8928; //
+
+            edi = 0x7758B42B;
+            esi = 0x37A8470E; //
+
+            for (ecx = 0; ecx < i; ecx++)
+            {
+                ebx = 0x267B0B11; //
+                v = (v << 1) | (v >> 0x1F);
+                ebx ^= v;
+                eax = m[ecx];
+                esi ^= eax;
+                edi ^= eax;
+                edx = ebx;
+                edx += edi;
+                edx |= 0x02040801; // 
+                edx &= 0xBFEF7FDF;//
+                num = edx;
+                num *= esi;
+                eax = (uint)num;
+                edx = (uint)(num >> 0x20);
+                if (edx != 0)
+                    eax++;
+                num = eax;
+                num += edx;
+                eax = (uint)num;
+                if (((uint)(num >> 0x20)) != 0)
+                    eax++;
+                edx = ebx;
+                edx += esi;
+                edx |= 0x00804021; //
+                edx &= 0x7DFEFBFF; //
+                esi = eax;
+                num = edi;
+                num *= edx;
+                eax = (uint)num;
+                edx = (uint)(num >> 0x20);
+                num = edx;
+                num += edx;
+                edx = (uint)num;
+                if (((uint)(num >> 0x20)) != 0)
+                    eax++;
+                num = eax;
+                num += edx;
+                eax = (uint)num;
+                if (((uint)(num >> 0x20)) != 0)
+                    eax += 2;
+                edi = eax;
+            }
+            esi ^= edi;
+            v = esi;
+
+            return v;
         }
     }
 }

@@ -6,6 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="luadec.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="luadec.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WindsoulDataFile\WindsoulDataFile.csproj" />
   </ItemGroup>
 
