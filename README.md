@@ -55,6 +55,14 @@ using WindsoulDatFile;
 
 using (var windsoul = new WindsoulFile("file.wdf"))
 {
+    // Display the number of files that the package contains
+    Console.WriteLine("File Count: {0}", windsoul.Count);
+    
+    foreach (var fileEntry in windsoul.Files)
+    {
+        // Loop through files
+    }
+    
     // TODO: do your stuff
 }
 ```
