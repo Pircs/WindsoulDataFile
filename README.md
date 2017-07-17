@@ -1,6 +1,7 @@
 # WindsoulDataFile
 
 [![Build Status](https://travis-ci.org/Eastrall/WindsoulDataFile.svg?branch=master)](https://travis-ci.org/Eastrall/WindsoulDataFile)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2e0d27e6b4b0484d9e22bca534187696)](https://www.codacy.com/app/Eastrall/WindsoulDataFile?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Eastrall/WindsoulDataFile&amp;utm_campaign=Badge_Grade)
 
 [Not available on NuGet yet]
 
