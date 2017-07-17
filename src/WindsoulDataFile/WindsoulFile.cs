@@ -13,13 +13,12 @@ namespace WindsoulDataFile
 
         private bool _disposed;
         private string _filePath;
-        private int _fileCount;
         private Stream _stream;
         private BinaryReader _reader;
         private List<WindsoulFileEntry> _files;
 
 
-        public int Count => this._fileCount;
+        public int Count => this._files.Count;
 
         public IReadOnlyCollection<WindsoulFileEntry> Files => this._files;
 
@@ -52,12 +51,12 @@ namespace WindsoulDataFile
             if (fileHeader != Header)
                 throw new WindsoulFileBadHeaderException();
 
-            this._fileCount = this._reader.ReadInt32();
+            int fileCount = this._reader.ReadInt32();
             uint fileListOffset = this._reader.ReadUInt32();
 
             this._reader.BaseStream.Seek(fileListOffset, SeekOrigin.Begin);
 
-            for (int i = 0; i < this._fileCount; i++)
+            for (int i = 0; i < fileCount; i++)
             {
                 var fileEntry = new WindsoulFileEntry()
                 {
@@ -75,10 +74,65 @@ namespace WindsoulDataFile
         {
             WindsoulFileEntry file = this._files.FirstOrDefault(x => x.Id == id);
 
-            this._reader.BaseStream.Seek(file.Offset, SeekOrigin.Begin);
-            byte[] content = this._reader.ReadBytes(file.Size);
+            if (file == null)
+                return null;
 
-            return content;
+            return this.ReadContent(file.Offset, file.Size);
+        }
+
+        public WindsoulFileEntry GetFile(uint id)
+        {
+            WindsoulFileEntry file = this._files.FirstOrDefault(x => x.Id == id);
+
+            if (file == null)
+                return null;
+
+            if (file.Content.Length != file.Size)
+                file.Content = this.ReadContent(file.Offset, file.Size);
+
+            return file;
+        }
+
+        public WindsoulFileEntry GetFile(string name)
+        {
+            uint fileId = this.Hash(name);
+
+            return this.GetFile(fileId);
+        }
+
+        public void Remove(uint id)
+        {
+            var file = this.GetFile(id);
+
+            if (file != null)
+                this._files.Remove(file);
+        }
+
+        public void Remove(string name)
+        {
+            uint fileId = this.Hash(name);
+
+            this.Remove(fileId);
+        }
+
+        public void AddFile(WindsoulFileEntry newFile)
+        {
+            var file = this.GetFile(newFile.Id);
+
+            if (file != null)
+                throw new Exception(); // Already exists
+
+            this._files.Add(newFile);
+        }
+
+        public void AddFile(string name, byte[] content)
+        {
+            var newFile = new WindsoulFileEntry()
+            {
+                Id = this.Hash(name),
+                Content = content,
+                Size = content.Length
+            };
         }
 
         public void Dispose()
@@ -93,6 +147,13 @@ namespace WindsoulDataFile
 
                 this._disposed = true;
             }
+        }
+
+        private byte[] ReadContent(uint offset, int size)
+        {
+            this._reader.BaseStream.Seek(offset, SeekOrigin.Begin);
+
+            return this._reader.ReadBytes(size);
         }
 
         private uint Hash(string input)

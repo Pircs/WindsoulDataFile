@@ -3,10 +3,7 @@ solution: WindsoulDataFile.sln
 dist: trusty
 sudo: required
 mono: none
-matrix:
-    include:
-        - dotnet: 1.0.4
-          env: DOTNETCORE=1
+dotnet: 1.0.4
 before_install:
   - chmod +x ./scripts/build.sh
   - chmod +x ./scripts/test.sh

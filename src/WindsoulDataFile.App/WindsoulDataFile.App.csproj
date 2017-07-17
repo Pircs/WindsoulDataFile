@@ -10,12 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="luadec.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WindsoulDataFile\WindsoulDataFile.csproj" />
   </ItemGroup>
 

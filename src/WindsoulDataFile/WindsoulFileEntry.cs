@@ -9,5 +9,11 @@
         public int Size { get; internal set; }
 
         public uint Reserved { get; internal set; }
+
+        public byte[] Content { get; set; }
+
+        public WindsoulFileEntry()
+        {
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WindsoulDataFile.App
 {
-    class Program
+    public static class Program
     {
         private const string TestFile = @"../../data/file.wdf";
 
@@ -20,7 +20,11 @@ namespace WindsoulDataFile.App
                 Console.WriteLine("Files :");
                 foreach (var fileEntry in windsoul.Files)
                 {
-                    Console.WriteLine("- {0}", fileEntry.Id);
+                    Console.WriteLine("====== {0} ======", fileEntry.Id);
+                    Console.WriteLine("Size : {0}", fileEntry.Size);
+                    Console.WriteLine("Offset: {0}", fileEntry.Offset);
+                    Console.WriteLine("Reserved: {0}", fileEntry.Reserved);
+                    Console.WriteLine("=================");
                 }
             }
 
