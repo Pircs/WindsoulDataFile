@@ -9,10 +9,9 @@ namespace WindsoulDataFile
 {
     public sealed class WindsoulFile : IDisposable
     {
-        public const uint Header = 0x57444650;
+        public static readonly uint Header = 0x57444650;
 
         private bool _disposed;
-        private string _filePath;
         private Stream _stream;
         private BinaryReader _reader;
         private List<WindsoulFileEntry> _files;
@@ -27,8 +26,7 @@ namespace WindsoulDataFile
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"Cannot find file : '{filePath}'", filePath);
             
-            this._filePath = filePath;
-            this.Open(File.OpenRead(this._filePath));
+            this.Open(File.OpenRead(filePath));
         }
 
         public WindsoulFile(byte[] fileBuffer)
@@ -49,7 +47,7 @@ namespace WindsoulDataFile
             uint fileHeader = this._reader.ReadUInt32();
 
             if (fileHeader != Header)
-                throw new WindsoulFileBadHeaderException();
+                throw new WindsoulFileBadHeaderException(fileHeader);
 
             int fileCount = this._reader.ReadInt32();
             uint fileListOffset = this._reader.ReadUInt32();
@@ -95,7 +93,7 @@ namespace WindsoulDataFile
 
         public WindsoulFileEntry GetFile(string name)
         {
-            uint fileId = this.Hash(name);
+            uint fileId = Hash(name);
 
             return this.GetFile(fileId);
         }
@@ -110,7 +108,7 @@ namespace WindsoulDataFile
 
         public void Remove(string name)
         {
-            uint fileId = this.Hash(name);
+            uint fileId = Hash(name);
 
             this.Remove(fileId);
         }
@@ -120,7 +118,7 @@ namespace WindsoulDataFile
             var file = this.GetFile(newFile.Id);
 
             if (file != null)
-                throw new Exception(); // Already exists
+                throw new WindsoulFileEntryAlreadyExists(newFile.Id.ToString());
 
             this._files.Add(newFile);
         }
@@ -129,7 +127,7 @@ namespace WindsoulDataFile
         {
             var newFile = new WindsoulFileEntry()
             {
-                Id = this.Hash(name),
+                Id = Hash(name),
                 Content = content,
                 Size = content.Length
             };
@@ -156,7 +154,7 @@ namespace WindsoulDataFile
             return this._reader.ReadBytes(size);
         }
 
-        private uint Hash(string input)
+        private static uint Hash(string input)
         {
             //x86 - 32 bits - Registers
             uint eax, ebx, ecx, edx, edi, esi;

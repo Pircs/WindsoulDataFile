@@ -14,17 +14,13 @@ namespace WindsoulDataFile.App
         {
             using (var windsoul = new WindsoulFile(TestFile))
             {
-                Console.WriteLine("Valid Windsoul file.");
-
                 Console.WriteLine("File count: {0}", windsoul.Count);
-                Console.WriteLine("Files :");
                 foreach (var fileEntry in windsoul.Files)
                 {
                     Console.WriteLine("====== {0} ======", fileEntry.Id);
                     Console.WriteLine("Size : {0}", fileEntry.Size);
                     Console.WriteLine("Offset: {0}", fileEntry.Offset);
                     Console.WriteLine("Reserved: {0}", fileEntry.Reserved);
-                    Console.WriteLine("=================");
                 }
             }
 
