@@ -9,6 +9,9 @@ namespace WindsoulDataFile
 {
     public sealed class WindsoulFile : IDisposable
     {
+        /// <summary>
+        /// Windsoul Data File header.
+        /// </summary>
         public static readonly uint Header = 0x57444650;
 
         private bool _disposed;
@@ -16,11 +19,20 @@ namespace WindsoulDataFile
         private BinaryReader _reader;
         private List<WindsoulFileEntry> _files;
 
-
+        /// <summary>
+        /// Gets the number of files of the <see cref="WindsoulFile"/>.
+        /// </summary>
         public int Count => this._files.Count;
 
+        /// <summary>
+        /// Gets the <see cref="WindsoulFileEntry"/> collection of the <see cref="WindsoulFile"/>.
+        /// </summary>
         public IReadOnlyCollection<WindsoulFileEntry> Files => this._files;
 
+        /// <summary>
+        /// Opens a new <see cref="WindsoulFile"/> from a file path.
+        /// </summary>
+        /// <param name="filePath">Windsoul data file path</param>
         public WindsoulFile(string filePath)
         {
             if (!File.Exists(filePath))
@@ -29,16 +41,28 @@ namespace WindsoulDataFile
             this.Open(File.OpenRead(filePath));
         }
 
+        /// <summary>
+        /// Opens a new <see cref="WindsoulFile"/> from a buffer.
+        /// </summary>
+        /// <param name="fileBuffer"></param>
         public WindsoulFile(byte[] fileBuffer)
         {
             this.Open(new MemoryStream(fileBuffer));
         }
 
+        /// <summary>
+        /// Opens a new <see cref="WindsoulFile"/> from a <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="input">Windsoul data file stream</param>
         public WindsoulFile(Stream input)
         {
             this.Open(input);
         }
 
+        /// <summary>
+        /// Opens the <see cref="WindsoulFile"/> from a <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="input">Windsoul data file stream</param>
         private void Open(Stream input)
         {
             this._stream = input;
