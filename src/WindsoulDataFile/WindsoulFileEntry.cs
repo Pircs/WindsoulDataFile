@@ -12,8 +12,18 @@
 
         public byte[] Content { get; set; }
 
-        public WindsoulFileEntry()
+        public WindsoulFileEntry(uint id, uint offset, int size, uint reserved)
+            : this(id, offset, size, reserved, null)
         {
+        }
+
+        public WindsoulFileEntry(uint id, uint offset, int size, uint reserved, byte[] content)
+        {
+            this.Id = id;
+            this.Offset = offset;
+            this.Size = size;
+            this.Reserved = reserved;
+            this.Content = content;
         }
     }
 }

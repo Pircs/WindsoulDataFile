@@ -56,15 +56,12 @@ namespace WindsoulDataFile
 
             for (int i = 0; i < fileCount; i++)
             {
-                var fileEntry = new WindsoulFileEntry()
-                {
-                    Id = this._reader.ReadUInt32(),
-                    Offset = this._reader.ReadUInt32(),
-                    Size = this._reader.ReadInt32(),
-                    Reserved = this._reader.ReadUInt32()
-                };
+                uint id = this._reader.ReadUInt32();
+                uint offset = this._reader.ReadUInt32();
+                int size = this._reader.ReadInt32();
+                uint reserved = this._reader.ReadUInt32();
 
-                this._files.Add(fileEntry);
+                this._files.Add(new WindsoulFileEntry(id, offset, size, reserved));
             }
         }
 
@@ -125,12 +122,9 @@ namespace WindsoulDataFile
 
         public void AddFile(string name, byte[] content)
         {
-            var newFile = new WindsoulFileEntry()
-            {
-                Id = Hash(name),
-                Content = content,
-                Size = content.Length
-            };
+            var newFile = new WindsoulFileEntry(Hash(name), 0, content.Length, 0, content);
+
+            this.AddFile(newFile);
         }
 
         public void Dispose()
@@ -154,7 +148,7 @@ namespace WindsoulDataFile
             return this._reader.ReadBytes(size);
         }
 
-        private static uint Hash(string input)
+        private static uint Hash(string inputText)
         {
             //x86 - 32 bits - Registers
             uint eax, ebx, ecx, edx, edi, esi;
@@ -165,8 +159,7 @@ namespace WindsoulDataFile
             uint[] m = new uint[0x46];
             byte[] buffer = new byte[0x100];
 
-            input = input.ToLowerInvariant();
-            //input = input.Replace('\\', '/');
+            var input = inputText.ToLowerInvariant();
 
             for (i = 0; i < input.Length; i++)
                 buffer[i] = (byte)input[i];
